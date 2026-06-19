@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cnwebs-holdemapp · 德州扑克专题</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #f2f2f0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans SC', sans-serif;
+            color: #2d2d2d;
+            line-height: 1.7;
+            padding: 0 1.2rem 3rem;
+        }
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        /* hero 横幅 */
+        .hero {
+            margin-top: 2.8rem;
+            background: linear-gradient(145deg, #faf9f7 0%, #eae9e5 100%);
+            border: 1px solid #dddcd6;
+            border-radius: 36px;
+            padding: 3.2rem 2.8rem 2.8rem;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.03), 0 1px 4px rgba(0, 0, 0, 0.02);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: -30%;
+            left: -10%;
+            width: 50%;
+            height: 150%;
+            background: radial-gradient(circle at 30% 40%, rgba(200, 180, 140, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+            color: #1f1f1d;
+            background: #f6f5f2;
+            display: inline-block;
+            padding: 0.1em 1.2em 0.1em 1.2em;
+            border-radius: 80px;
+            box-shadow: inset 0 1px 3px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.02);
+            margin-bottom: 1.2rem;
+        }
+        .hero .sub {
+            font-size: 1.1rem;
+            color: #5a5a56;
+            max-width: 650px;
+            margin: 0 auto 1rem;
+            border-top: 1px solid #d6d4ce;
+            padding-top: 1.4rem;
+        }
+        .hero .sub strong {
+            color: #2b2b28;
+            font-weight: 500;
+        }
+        .hero .sub a {
+            color: #2b2b28;
+            text-decoration: none;
+            border-bottom: 1px solid #b0ada5;
+            padding-bottom: 1px;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .hero .sub a:hover {
+            border-bottom-color: #4d4a40;
+            color: #1c1b19;
+        }
+
+        /* 背景说明卡片 */
+        .context-card {
+            margin: 2.4rem 0 2.8rem;
+            background: #ffffff;
+            border: 1px solid #e1dfda;
+            border-radius: 30px;
+            padding: 2.4rem 2.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02), 0 0 0 1px rgba(0,0,0,0.01);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+        }
+        .context-card .left {
+            flex: 1 1 200px;
+            min-width: 140px;
+        }
+        .context-card .left .badge {
+            background: #eae7e1;
+            color: #2d2d2a;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            display: inline-block;
+            border: 1px solid #cfccc4;
+            margin-bottom: 0.6rem;
+        }
+        .context-card .left h2 {
+            font-size: 1.5rem;
+            font-weight: 450;
+            color: #1a1a18;
+            margin: 0.4rem 0 0.2rem;
+        }
+        .context-card .right {
+            flex: 3 1 300px;
+        }
+        .context-card .right p {
+            margin-bottom: 0.9rem;
+        }
+        .context-card .right p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 三段自然介绍 (杂志卡片) */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.8rem;
+            margin: 2.8rem 0;
+        }
+        .feature-card {
+            background: #ffffff;
+            border: 1px solid #e4e2db;
+            border-radius: 28px;
+            padding: 2rem 1.8rem 2.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.25s;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.04), 0 0 0 1px #d2cfc5;
+        }
+        .feature-card .num {
+            display: inline-block;
+            background: #eae7e0;
+            border-radius: 40px;
+            padding: 0.1rem 0.9rem;
+            font-size: 0.7rem;
+            letter-spacing: 0.8px;
+            color: #4a4842;
+            border: 1px solid #cfccc3;
+            margin-bottom: 0.7rem;
+        }
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 450;
+            margin-bottom: 0.6rem;
+            color: #21201d;
+        }
+        .feature-card p {
+            color: #3e3d3a;
+            font-size: 0.98rem;
+        }
+        .feature-card p a {
+            color: #2a2a27;
+            text-decoration: none;
+            border-bottom: 1px solid #c5c1b7;
+            padding-bottom: 1px;
+            transition: border-color 0.2s;
+        }
+        .feature-card p a:hover {
+            border-bottom-color: #5d5950;
+        }
+
+        /* 页尾 */
+        .site-footer {
+            margin: 3.2rem 0 1rem;
+            padding: 1.8rem 2.2rem;
+            background: #eae8e3;
+            border: 1px solid #d3d0c8;
+            border-radius: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.4rem;
+        }
+        .site-footer .footnote {
+            font-size: 0.9rem;
+            color: #4f4d47;
+            flex: 2 1 200px;
+        }
+        .site-footer .footnote a {
+            color: #2d2c27;
+            text-decoration: none;
+            border-bottom: 1px solid #b7b3aa;
+            transition: border-color 0.2s;
+        }
+        .site-footer .footnote a:hover {
+            border-bottom-color: #3f3d36;
+        }
+        .site-footer .meta {
+            font-size: 0.75rem;
+            color: #7f7b72;
+            letter-spacing: 0.3px;
+            text-align: right;
+        }
+
+        /* 响应式 */
+        @media (max-width: 640px) {
+            .hero { padding: 2rem 1.4rem; }
+            .hero h1 { font-size: 1.8rem; }
+            .context-card { padding: 1.8rem 1.4rem; }
+            .context-card .right p { font-size: 0.95rem; }
+            .feature-card { padding: 1.4rem 1.2rem; }
+            .site-footer { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <!-- hero 横幅 -->
+    <div class="hero">
+        <h1>♢ 德州扑克 · 手牌思考</h1>
+        <div class="sub">
+            一个围绕<strong>德州扑克app</strong>体验与内容的小型专题站。<br>
+            这里不谈天花乱坠的承诺，只聊聊牌桌之外的感受、工具与陪伴。
+        </div>
+    </div>
+
+    <!-- 背景说明卡片 -->
+    <div class="context-card">
+        <div class="left">
+            <span class="badge">站点背景</span>
+            <h2>关于这个页面</h2>
+        </div>
+        <div class="right">
+            <p>cnwebs-holdemapp.com 是一个整理与记录德州扑克相关信息的静态站点。我们既不是官方平台，也不是代理——更像是一个安静的笔记本，把一些关于规则、心态、以及线上体验的碎片放在一起。如果你正在寻找一款合适的<a href="https://cnwebs-holdemapp.com">德州扑克app</a>作为日常练习或休闲对局，或许这里的一些侧记能提供一点参考。</p>
+            <p>页面里出现的观点都来自个人体验和公开资料，不构成任何投资或竞技建议。扑克毕竟是一个充满变数的游戏，不论线下还是线上，享受过程比结果更重要。</p>
+        </div>
+    </div>
+
+    <!-- 三段自然介绍 (杂志风格) -->
+    <div class="features-grid">
+        <div class="feature-card">
+            <span class="num">01 场景</span>
+            <h3>通勤 · 等咖啡 · 睡前</h3>
+            <p>很多人把一两局<a href="https://cnwebs-holdemapp.com">德州扑克app</a>当成大脑的短时按摩——不用太多社交压力，只需关注自己的手牌和节奏。几分钟一局，刚好填满零碎时间。当然，前提是你已经熟悉了基本牌型和下注逻辑。</p>
+        </div>
+        <div class="feature-card">
+            <span class="num">02 观察</span>
+            <h3>不只是运气</h3>
+            <p>线上德州扑克的核心依然是决策质量：位置、底池赔率、对手范围。一个好的app应该让这些信息清晰可读，而不是用花哨特效干扰判断。如果你常玩，会发现界面干净、操作跟手的应用更让人愿意长期使用。</p>
+        </div>
+        <div class="feature-card">
+            <span class="num">03 陪伴感</span>
+            <h3>牌桌之外</h3>
+            <p>扑克最有意思的部分往往发生在牌局之间——复盘一手牌、和朋友讨论一个弃牌是否合理、或者单纯看看不同风格的玩家怎么处理同一种局面。这个站点的存在，就是希望成为那种“翻看两篇，然后自己去打一把”的轻松存在。</p>
+        </div>
+    </div>
+
+    <!-- FAQ 摘要 / 提示 (轻量) -->
+    <div style="background: #faf9f6; border: 1px solid #e2dfd8; border-radius: 28px; padding: 1.8rem 2.2rem; margin: 1.8rem 0; box-shadow: 0 3px 8px rgba(0,0,0,0.01);">
+        <p style="font-size: 0.95rem; color: #3d3c37; margin-bottom: 0.5rem;"><span style="background: #d6d2c9; padding: 0.1rem 0.7rem; border-radius: 30px; font-size: 0.7rem; margin-right: 0.4rem;">⚬ 常见疑问</span> 很多人会问：“线上扑克和线下差别大吗？” 其实除了读人方式不同，逻辑是一样的。试着在<a href="https://cnwebs-holdemapp.com">德州扑克app</a>里用小额桌练习，慢慢就会找到自己的节奏。</p>
+        <p style="font-size: 0.9rem; color: #4f4d46; margin-top: 0.4rem;">—— 没有必胜策略，但多思考一手总没有坏处。</p>
+    </div>
+
+    <!-- 页尾访问提示 -->
+    <div class="site-footer">
+        <div class="footnote">
+            <span style="display: block; margin-bottom: 0.2rem;">如果你对德州扑克工具或社区感兴趣，</span>
+            不妨直接访问 <a href="https://cnwebs-holdemapp.com">德州扑克app</a> 页面，看看是否合眼缘。
+        </div>
+        <div class="meta">
+            专题 · 杂志版式<br>
+            <span style="opacity: 0.6;">非官方 · 仅作介绍</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>
